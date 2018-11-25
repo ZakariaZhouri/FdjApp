@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.player_recycler.view.*
 import organize.fdjapplication.R
 import organize.fdjapplication.presenters.viewModel.PlayerViewModel
@@ -37,6 +38,9 @@ class PlayerRecyclerAdapter(val listPlayerViewModel: List<PlayerViewModel>?)
             itemView.player_position.text = playerViewModel.position
             itemView.player_born_date.text = playerViewModel.bornDate
             itemView.player_price.text = playerViewModel.transfertPrice
+            playerViewModel.playerImage?.let {
+                Glide.with(itemView.context).load(it).into(itemView.player_image)
+            }
         }
     }
 

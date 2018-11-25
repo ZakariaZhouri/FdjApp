@@ -10,7 +10,7 @@ import organize.fdjapplication.presenters.LiguePresenterImpl
 import organize.fdjapplication.presenters.view.LigueView
 import organize.fdjapplication.presenters.viewModel.TeamViewModel
 import organize.fdjapplication.repository.interactor.ligueInteractor.TeamsRepository
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_teams.*
 import organize.fdjapplication.presenters.listener.MainRecyclerListener
 import organize.fdjapplication.ui.activity.PlayersActivity.Companion.TEAM_NAME
 import organize.fdjapplication.ui.recycler.TeamsRecyclerAdapter
@@ -24,7 +24,7 @@ class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_teams)
     }
 
     override fun onPause() {

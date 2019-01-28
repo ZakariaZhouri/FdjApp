@@ -1,15 +1,19 @@
 package organize.fdjapplication.presenters
 
+import organize.fdjapplication.data.PlayerRepository
+import organize.fdjapplication.domain.PlayerUsesCase
 import organize.fdjapplication.presenters.listener.PlayerPrensenter
 import organize.fdjapplication.presenters.listener.TeamListener
 import organize.fdjapplication.presenters.view.PlayerView
 import organize.fdjapplication.presenters.viewModel.PlayerViewModel
 import organize.fdjapplication.repository.interactor.playerInteractor.PlayerInteractor
 import organize.fdjapplication.repository.models.Player
-import organize.fdjapplication.repository.models.PlayersModel
 
 class PlayerPresenterImpl(val repository: PlayerInteractor, val view: PlayerView) : PlayerPrensenter, TeamListener {
     override fun getPlayerList(teamName: String) {
+        val repositpry = PlayerRepository()
+        val playerUsesCase = PlayerUsesCase(repositpry)
+        playerUsesCase.teamPlayer(teamName)
         repository.getPlayerList(teamName, this)
     }
 

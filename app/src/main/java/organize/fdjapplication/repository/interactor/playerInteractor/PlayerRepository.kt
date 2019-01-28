@@ -16,20 +16,8 @@ class PlayerRepository : PlayerInteractor {
         RetrofitInstance.getRetrofitInstance()
 
         val service = RetrofitInstance.getRetrofitInstance().create<FdjApi>()
-        val call = service.searchTeam(teamName)
-        call.enqueue(object : Callback<PlayersModel> {
-            override fun onResponse(call: Call<PlayersModel>, response: Response<PlayersModel>) {
-                response.body()?.let { players ->
-                    players.listPlayer?.let {
-                        teamListener.onResponse(it)
-                    } ?: teamListener.onFailure()
-                }
-            }
+     //   val call = service.searchTeam(teamName)
 
-            override fun onFailure(call: Call<PlayersModel>, t: Throwable) {
-                teamListener.onFailure()
-            }
-        })
     }
 
 }

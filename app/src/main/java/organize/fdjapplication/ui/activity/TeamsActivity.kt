@@ -81,7 +81,7 @@ class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
 
     override fun onResume() {
         super.onResume()
-     //   ok_button.setOnClickListener { view -> onClickButonOk() }
+        ok_button.setOnClickListener { view -> onClickButonOk() }
     }
 
     private fun onClickButonOk() {

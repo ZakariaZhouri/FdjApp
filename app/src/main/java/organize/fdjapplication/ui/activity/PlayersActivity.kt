@@ -3,7 +3,6 @@ package organize.fdjapplication.ui.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -11,8 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_players.*
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
 import organize.fdjapplication.R
 import organize.fdjapplication.presenters.PlayerPresenterImpl
 import organize.fdjapplication.presenters.view.PlayerView
@@ -58,8 +55,8 @@ class PlayersActivity : AppCompatActivity(), PlayerView {
 
     override fun onResume() {
         super.onResume()
-        //  val teamName = intent.extras.getString(TEAM_NAME)
-        //presenter.getPlayerList(teamName)
+          val teamName = intent.extras.getString(TEAM_NAME)
+        presenter.getPlayerList(teamName)
     }
 
     override fun onPause() {

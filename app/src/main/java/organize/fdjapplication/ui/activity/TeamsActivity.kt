@@ -4,7 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import organize.fdjapplication.R
 import organize.fdjapplication.presenters.LiguePresenterImpl
 import organize.fdjapplication.presenters.view.LigueView
@@ -25,6 +32,47 @@ class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teams)
+        val list = listOf("a","b","c")
+        Observable.create(ObservableOnSubscribe<String>
+        { emitter -> emitter.onNext(fetchFromServer()) })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{ result ->  displayResult(result) }
+        Observable.just(list)
+                .subscribeOn(Schedulers.newThread())
+                //each subscription is going to be on a new thread.
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<List<String>> {
+
+
+                    override fun onNext(t: List<String>) {
+                        Log.e("Output",t.get(0))
+                    }
+
+
+                    override fun onComplete() {
+                        Log.e("onComplete","onComplete")
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                        Log.e("onSubscribe",d.toString())
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("onError","onError")
+                    }
+                })
+    }
+
+    private fun displayResult(result: String?) {
+        result?.let { it->
+            team_name_edt.setText(it)
+        }
+    }
+
+    private fun fetchFromServer(): String {
+        return "String"
     }
 
     override fun onPause() {
@@ -33,7 +81,7 @@ class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
 
     override fun onResume() {
         super.onResume()
-        ok_button.setOnClickListener { view -> onClickButonOk() }
+     //   ok_button.setOnClickListener { view -> onClickButonOk() }
     }
 
     private fun onClickButonOk() {

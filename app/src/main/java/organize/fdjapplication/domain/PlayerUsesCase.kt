@@ -1,38 +1,38 @@
 package organize.fdjapplication.domain
 
-import android.database.Observable
 import android.util.Log
+import io.reactivex.Observable
 import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
 import organize.fdjapplication.data.PayersRepositoryInterface
 import organize.fdjapplication.repository.models.PlayersModel
 
+
 class PlayerUsesCase(val playerRepositoryInterface: PayersRepositoryInterface) {
 
-    fun teamPlayer(teamName: String) {
-        val obsarvable = playerRepositoryInterface.searchTeam(teamName)
-        obsarvable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<PlayersModel> {
-                    override fun onComplete() {
-                        Log.e("onComplete", "onComplete")
-                    }
+    fun teamPlayer(teamName: String): Observable<PlayersModel> {
+        val observable = playerRepositoryInterface.searchTeam(teamName)
+        val disposable = observable.subscribe(object : Observer<PlayersModel> {
+            override fun onComplete() {
+            }
 
-                    override fun onSubscribe(d: Disposable) {
-                        Log.e("onSubscribe", "onSubscribe")
-                    }
+            override fun onSubscribe(d: Disposable) {
+            }
 
-                    override fun onNext(t: PlayersModel) {
-                        Log.e("onNext", t.toString())
-                    }
+            override fun onNext(playerModel: PlayersModel) {
+                playerModel.listPlayer?.get(0)?.playerName = "ZAKARIA"
+            }
 
-                    override fun onError(e: Throwable) {
-                        Log.e("onError", "onError")
+            override fun onError(e: Throwable) {
+            }
 
-                    }
+        })
 
-                })
+
+        //      subscribe { playerModel ->
+        //
+        //}
+        return observable
     }
 }

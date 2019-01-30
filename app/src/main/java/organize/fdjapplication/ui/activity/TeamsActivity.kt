@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_teams.*
 import organize.fdjapplication.presenters.listener.MainRecyclerListener
 import organize.fdjapplication.ui.activity.PlayersActivity.Companion.TEAM_NAME
 import organize.fdjapplication.ui.recycler.TeamsRecyclerAdapter
+import android.os.SystemClock
 
 
 class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
@@ -32,12 +33,16 @@ class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_teams)
-        val list = listOf("a","b","c")
-        Observable.create(ObservableOnSubscribe<String>
-        { emitter -> emitter.onNext(fetchFromServer()) })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ result ->  displayResult(result) }
+        val list = listOf("a", "b", "c")
+        val serverDownloadObservable = Observable.create<Int> { emitter ->
+            SystemClock.sleep(10000) // simulate delay
+            emitter.onNext(5)
+            emitter.onComplete()
+        }.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+        val disposable = serverDownloadObservable.subscribe { result ->
+            team_name_edt.setText(result.toString())
+        }
+        disposable.dispose()
         Observable.just(list)
                 .subscribeOn(Schedulers.newThread())
                 //each subscription is going to be on a new thread.
@@ -46,27 +51,27 @@ class TeamsActivity : AppCompatActivity(), LigueView, MainRecyclerListener {
 
 
                     override fun onNext(t: List<String>) {
-                        Log.e("Output",t.get(0))
+                        Log.e("Output", t.get(0))
                     }
 
 
                     override fun onComplete() {
-                        Log.e("onComplete","onComplete")
+                        Log.e("onComplete", "onComplete")
                     }
 
                     override fun onSubscribe(d: Disposable) {
-                        Log.e("onSubscribe",d.toString())
+                        Log.e("onSubscribe", d.toString())
 
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.e("onError","onError")
+                        Log.e("onError", "onError")
                     }
                 })
     }
 
     private fun displayResult(result: String?) {
-        result?.let { it->
+        result?.let { it ->
             team_name_edt.setText(it)
         }
     }

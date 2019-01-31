@@ -15,21 +15,5 @@ import java.util.*
 
 class PlayerController(val view: PlayerView) {
 
-    val playerRepository = PlayerRepository()
-    val playerInteracto = PlayerUsesCase(playerRepository)
-    fun getTeamPlayer(temaName: String) {
-        playerInteracto.teamPlayer(temaName).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(object : DisposableObserver<PlayersModel>() {
-            override fun onComplete() {
-            }
 
-            override fun onNext(t: PlayersModel) {
-                Log.e("Players===============>", t.toString())
-            }
-
-            override fun onError(e: Throwable) {
-            }
-
-        })
-
-    }
 }
